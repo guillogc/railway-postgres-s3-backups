@@ -1,10 +1,10 @@
 import { envsafe, str, bool } from "envsafe";
 
 export const env = envsafe({
-    AWS_ACCESS_KEY_ID: str(),
-    AWS_SECRET_ACCESS_KEY: str(),
-    AWS_S3_BUCKET: str(),
-    AWS_S3_REGION: str(),
+    S3_ACCESS_KEY_ID: str(),
+    S3_SECRET_ACCESS_KEY: str(),
+    S3_BUCKET: str(),
+    S3_REGION: str(),
     BACKUP_DATABASE_URL: str({
         desc: "The connection string of the database to backup.",
     }),
@@ -13,12 +13,12 @@ export const env = envsafe({
         default: "0 5 * * *",
         allowEmpty: true,
     }),
-    AWS_S3_ENDPOINT: str({
+    S3_ENDPOINT: str({
         desc: "The S3 custom endpoint you want to use.",
         default: "",
         allowEmpty: true,
     }),
-    AWS_S3_FORCE_PATH_STYLE: bool({
+    S3_FORCE_PATH_STYLE: bool({
         desc: "Use path style for the endpoint instead of the default subdomain style, useful for MinIO",
         default: false,
         allowEmpty: true,

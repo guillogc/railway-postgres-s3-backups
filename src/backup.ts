@@ -12,17 +12,21 @@ import { createMD5 } from "./util.js";
 const uploadToS3 = async ({ name, path }: { name: string; path: string }) => {
     console.log("Uploading backup to S3...");
 
-    const bucket = env.AWS_S3_BUCKET;
+    const bucket = env.S3_BUCKET;
 
     const clientOptions: S3ClientConfig = {
-        region: env.AWS_S3_REGION,
-        forcePathStyle: env.AWS_S3_FORCE_PATH_STYLE,
+        region: env.S3_REGION,
+        forcePathStyle: env.S3_FORCE_PATH_STYLE,
+        credentials: {
+            accessKeyId: env.S3_ACCESS_KEY_ID,
+            secretAccessKey: env.S3_SECRET_ACCESS_KEY,
+        },
     };
 
-    if (env.AWS_S3_ENDPOINT) {
-        console.log(`Using custom endpoint: ${env.AWS_S3_ENDPOINT}`);
+    if (env.S3_ENDPOINT) {
+        console.log(`Using custom endpoint: ${env.S3_ENDPOINT}`);
 
-        clientOptions.endpoint = env.AWS_S3_ENDPOINT;
+        clientOptions.endpoint = env.S3_ENDPOINT;
     }
 
     if (env.BUCKET_SUBFOLDER) {
