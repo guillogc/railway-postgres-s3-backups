@@ -23,11 +23,6 @@ export const env = envsafe({
         default: false,
         allowEmpty: true,
     }),
-    RUN_ON_STARTUP: bool({
-        desc: "Run a backup on startup of this application",
-        default: false,
-        allowEmpty: true,
-    }),
     BACKUP_FILE_PREFIX: str({
         desc: "Prefix to the file name",
         default: "backup",

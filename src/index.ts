@@ -13,15 +13,13 @@ const tryBackup = async () => {
     }
 };
 
-if (env.RUN_ON_STARTUP || env.SINGLE_SHOT_MODE) {
-    console.log("Running on start backup...");
+console.log("Running on start backup...");
 
-    await tryBackup();
+await tryBackup();
 
-    if (env.SINGLE_SHOT_MODE) {
-        console.log("Database backup complete, exiting...");
-        process.exit(0);
-    }
+if (env.SINGLE_SHOT_MODE) {
+    console.log("Database backup complete, exiting...");
+    process.exit(0);
 }
 
 const job = new CronJob(env.BACKUP_CRON_SCHEDULE, async () => {

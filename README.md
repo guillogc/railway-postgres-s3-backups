@@ -22,8 +22,6 @@ A simple Bun application to backup your PostgreSQL database to S3 via a cron.
 
 - `S3_FORCE_PATH_STYLE` - Use path style for the endpoint instead of the default subdomain style, useful for MinIO. Default `false`
 
-- `RUN_ON_STARTUP` - Run a backup on startup of this application then proceed with making backups on the set schedule.
-
 - `BACKUP_FILE_PREFIX` - Add a prefix to the file name.
 
 - `BUCKET_SUBFOLDER` - Define a subfolder to place the backup files in.
