@@ -19,7 +19,7 @@ COPY --from=build /app/bun.lockb ./
 COPY --from=build /app/src ./src
 COPY --from=build /app/tsconfig.json ./
 
-ARG PG_VERSION='16'
+ARG PG_VERSION='17'
 
 RUN apk add --update --no-cache postgresql${PG_VERSION}-client
 
