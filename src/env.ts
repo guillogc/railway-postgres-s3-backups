@@ -1,4 +1,4 @@
-import { envsafe, str, bool } from "envsafe";
+import { envsafe, str, bool, num } from "envsafe";
 
 export const env = envsafe({
     S3_ACCESS_KEY_ID: str(),
@@ -7,11 +7,6 @@ export const env = envsafe({
     S3_REGION: str(),
     BACKUP_DATABASE_URL: str({
         desc: "The connection string of the database to backup.",
-    }),
-    BACKUP_CRON_SCHEDULE: str({
-        desc: "The cron schedule to run the backup on.",
-        default: "0 5 * * *",
-        allowEmpty: true,
     }),
     S3_ENDPOINT: str({
         desc: "The S3 custom endpoint you want to use.",
@@ -32,11 +27,6 @@ export const env = envsafe({
         default: "",
         allowEmpty: true,
     }),
-    SINGLE_SHOT_MODE: bool({
-        desc: "Run a single backup on start and exit when completed",
-        default: false,
-        allowEmpty: true,
-    }),
     // This is both time consuming and resource intensive so we leave it disabled by default
     SUPPORT_OBJECT_LOCK: bool({
         desc: "Enables support for buckets with object lock by providing an MD5 hash with the backup file",
@@ -45,6 +35,11 @@ export const env = envsafe({
     BACKUP_OPTIONS: str({
         desc: "Any valid pg_dump option.",
         default: "",
+        allowEmpty: true,
+    }),
+    MAX_BACKUPS: num({
+        desc: "Maximum number of backups to keep in S3. Oldest backups are deleted when exceeded. 0 = unlimited.",
+        default: 0,
         allowEmpty: true,
     }),
 });

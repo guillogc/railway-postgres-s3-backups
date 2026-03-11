@@ -1,6 +1,6 @@
 # Postgres S3 backups
 
-A simple Bun application to backup your PostgreSQL database to S3 via a cron.
+A simple Bun application to backup your PostgreSQL database to S3. Run on a schedule via your platform's cron or scheduler.
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/I4zGrH)
 
@@ -16,8 +16,6 @@ A simple Bun application to backup your PostgreSQL database to S3 via a cron.
 
 - `BACKUP_DATABASE_URL` - The connection string of the database to backup.
 
-- `BACKUP_CRON_SCHEDULE` - The cron schedule to run the backup on. Example: `0 5 * * *`
-
 - `S3_ENDPOINT` - The S3 custom endpoint you want to use. Applicable for 3-rd party S3 services such as Cloudflare R2 or Backblaze R2.
 
 - `S3_FORCE_PATH_STYLE` - Use path style for the endpoint instead of the default subdomain style, useful for MinIO. Default `false`
@@ -26,11 +24,11 @@ A simple Bun application to backup your PostgreSQL database to S3 via a cron.
 
 - `BUCKET_SUBFOLDER` - Define a subfolder to place the backup files in.
 
-- `SINGLE_SHOT_MODE` - Run a single backup on start and exit when completed. Useful with the platform's native CRON schedular.
-
 - `SUPPORT_OBJECT_LOCK` - Enables support for buckets with object lock by providing an MD5 hash with the backup file.
 
 - `BACKUP_OPTIONS` - Add any valid pg_dump option, supported pg_dump options can be found [here](https://www.postgresql.org/docs/current/app-pgdump.html). Example: `--exclude-table=pattern`
+
+- `MAX_BACKUPS` - Maximum number of backups to keep in S3. Oldest backups are deleted when exceeded. 0 = unlimited. Default `0`.
 
 - `BUN_VERSION` - Specify a custom Bun version to override the default version set in the Dockerfile.
 

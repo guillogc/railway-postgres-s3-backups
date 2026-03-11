@@ -1,5 +1,11 @@
 import { exec, execSync } from "child_process";
-import { S3Client, S3ClientConfig, PutObjectCommandInput } from "@aws-sdk/client-s3";
+import {
+    S3Client,
+    S3ClientConfig,
+    PutObjectCommandInput,
+    ListObjectsV2Command,
+    DeleteObjectsCommand,
+} from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import { createReadStream, unlink, statSync } from "fs";
 import { filesize } from "filesize";
@@ -57,6 +63,48 @@ const uploadToS3 = async ({ name, path }: { name: string; path: string }) => {
     }).done();
 
     console.log("Backup uploaded to S3...");
+
+    if (env.MAX_BACKUPS > 0) {
+        const prefix = env.BUCKET_SUBFOLDER
+            ? `${env.BUCKET_SUBFOLDER}/${env.BACKUP_FILE_PREFIX}-`
+            : `${env.BACKUP_FILE_PREFIX}-`;
+
+        const objects: { Key?: string; LastModified?: Date }[] = [];
+        let continuationToken: string | undefined;
+
+        do {
+            const listResponse = await client.send(
+                new ListObjectsV2Command({
+                    Bucket: bucket,
+                    Prefix: prefix,
+                    ContinuationToken: continuationToken,
+                }),
+            );
+            objects.push(...(listResponse.Contents ?? []));
+            continuationToken = listResponse.NextContinuationToken;
+        } while (continuationToken);
+        if (objects.length > env.MAX_BACKUPS) {
+            const sorted = [...objects].sort(
+                (a, b) => (a.LastModified?.getTime() ?? 0) - (b.LastModified?.getTime() ?? 0),
+            );
+            const toDelete = sorted.slice(0, objects.length - env.MAX_BACKUPS);
+
+            for (let i = 0; i < toDelete.length; i += 1000) {
+                const batch = toDelete.slice(i, i + 1000);
+                await client.send(
+                    new DeleteObjectsCommand({
+                        Bucket: bucket,
+                        Delete: {
+                            Objects: batch.map((obj) => ({ Key: obj.Key! })),
+                            Quiet: true,
+                        },
+                    }),
+                );
+            }
+
+            console.log(`Pruned ${toDelete.length} old backup(s), keeping ${env.MAX_BACKUPS}.`);
+        }
+    }
 };
 
 const dumpToFile = async (filePath: string) => {
