@@ -14,7 +14,7 @@ A simple Bun application to backup your PostgreSQL database to S3. Run on a sche
 
 - `S3_REGION` - The name of the region your bucket is located in, set to `auto` if unknown.
 
-- `BACKUP_DATABASE_URL` - The connection string of the database to backup.
+- `DATABASE_URL` - The connection string of the database to backup. Defaults to `${{Postgres.DATABASE_URL}}` for Railway.
 
 - `S3_ENDPOINT` - The S3 custom endpoint you want to use. Applicable for 3-rd party S3 services such as Cloudflare R2 or Backblaze R2.
 

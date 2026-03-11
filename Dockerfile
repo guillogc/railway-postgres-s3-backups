@@ -23,6 +23,6 @@ ARG PG_VERSION='17'
 
 RUN apk add --update --no-cache postgresql${PG_VERSION}-client
 
-CMD pg_isready --dbname=$BACKUP_DATABASE_URL && \
+CMD pg_isready --dbname=$DATABASE_URL && \
     pg_dump --version && \
     bun run src/index.ts

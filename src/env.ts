@@ -5,7 +5,7 @@ export const env = envsafe({
     S3_SECRET_ACCESS_KEY: str(),
     S3_BUCKET: str(),
     S3_REGION: str(),
-    BACKUP_DATABASE_URL: str({
+    DATABASE_URL: str({
         desc: "The connection string of the database to backup.",
     }),
     S3_ENDPOINT: str({
@@ -39,7 +39,7 @@ export const env = envsafe({
     }),
     MAX_BACKUPS: num({
         desc: "Maximum number of backups to keep in S3. Oldest backups are deleted when exceeded. 0 = unlimited.",
-        default: 0,
+        default: 10,
         allowEmpty: true,
     }),
 });
