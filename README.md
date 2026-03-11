@@ -6,9 +6,9 @@ A simple Bun application to backup your PostgreSQL database to S3. Run on a sche
 
 ## Configuration
 
-- `S3_ACCESS_KEY_ID` - AWS access key ID.
+- `S3_ACCESS_KEY` - AWS access key ID.
 
-- `S3_SECRET_ACCESS_KEY` - AWS secret access key, sometimes also called an application key.
+- `S3_SECRET_KEY` - AWS secret access key, sometimes also called an application key.
 
 - `S3_BUCKET` - The name of the bucket that the access key ID and secret access key are authorized to access.
 

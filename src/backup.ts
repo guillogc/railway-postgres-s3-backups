@@ -24,8 +24,8 @@ const uploadToS3 = async ({ name, path }: { name: string; path: string }) => {
         region: env.S3_REGION,
         forcePathStyle: env.S3_FORCE_PATH_STYLE,
         credentials: {
-            accessKeyId: env.S3_ACCESS_KEY_ID,
-            secretAccessKey: env.S3_SECRET_ACCESS_KEY,
+            accessKeyId: env.S3_ACCESS_KEY,
+            secretAccessKey: env.S3_SECRET_KEY,
         },
     };
 
