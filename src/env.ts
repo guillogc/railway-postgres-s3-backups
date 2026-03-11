@@ -42,4 +42,9 @@ export const env = envsafe({
         default: 10,
         allowEmpty: true,
     }),
+    DISCORD_WEBHOOK_URL: str({
+        desc: "Optional Discord webhook URL for backup success/failure notifications.",
+        default: "",
+        allowEmpty: true,
+    }),
 });

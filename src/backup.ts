@@ -15,11 +15,7 @@ import os from "os";
 import { env } from "./env.js";
 import { createMD5 } from "./util.js";
 
-const uploadToS3 = async ({ name, path }: { name: string; path: string }) => {
-    console.log("Uploading backup to S3...");
-
-    const bucket = env.S3_BUCKET;
-
+const createS3Client = () => {
     const clientOptions: S3ClientConfig = {
         region: env.S3_REGION,
         forcePathStyle: env.S3_FORCE_PATH_STYLE,
@@ -28,34 +24,48 @@ const uploadToS3 = async ({ name, path }: { name: string; path: string }) => {
             secretAccessKey: env.S3_SECRET_KEY,
         },
     };
+    if (env.S3_ENDPOINT) {
+        clientOptions.endpoint = env.S3_ENDPOINT;
+    }
+    return new S3Client(clientOptions);
+};
+
+const uploadToS3 = async ({
+    name,
+    path: filePath,
+}: {
+    name: string;
+    path: string;
+}): Promise<void> => {
+    console.log("Uploading backup to S3...");
+
+    const bucket = env.S3_BUCKET;
+    const client = createS3Client();
 
     if (env.S3_ENDPOINT) {
         console.log(`Using custom endpoint: ${env.S3_ENDPOINT}`);
-
-        clientOptions.endpoint = env.S3_ENDPOINT;
     }
 
+    let s3Key = name;
     if (env.BUCKET_SUBFOLDER) {
-        name = env.BUCKET_SUBFOLDER + "/" + name;
+        s3Key = env.BUCKET_SUBFOLDER + "/" + name;
     }
 
     let params: PutObjectCommandInput = {
         Bucket: bucket,
-        Key: name,
-        Body: createReadStream(path),
+        Key: s3Key,
+        Body: createReadStream(filePath),
     };
 
     if (env.SUPPORT_OBJECT_LOCK) {
         console.log("MD5 hashing file...");
 
-        const md5Hash = await createMD5(path);
+        const md5Hash = await createMD5(filePath);
 
         console.log("Done hashing file");
 
         params.ContentMD5 = Buffer.from(md5Hash, "hex").toString("base64");
     }
-
-    const client = new S3Client(clientOptions);
 
     await new Upload({
         client,
@@ -163,7 +173,7 @@ const deleteFile = async (path: string) => {
     });
 };
 
-export const backup = async () => {
+export const backup = async (): Promise<{ filename: string; size: number }> => {
     console.log("Initiating DB backup...");
 
     const date = new Date().toISOString();
@@ -172,8 +182,10 @@ export const backup = async () => {
     const filepath = path.join(os.tmpdir(), filename);
 
     await dumpToFile(filepath);
+    const size = statSync(filepath).size;
     await uploadToS3({ name: filename, path: filepath });
     await deleteFile(filepath);
 
     console.log("DB backup complete...");
+    return { filename, size };
 };

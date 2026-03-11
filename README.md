@@ -37,6 +37,8 @@ A simple Bun application to backup your PostgreSQL database to S3. Runs a single
 
 - `MAX_BACKUPS` - Maximum number of backups to keep in S3. Oldest backups are deleted when exceeded. 0 = unlimited. Default `0`.
 
+- `DISCORD_WEBHOOK_URL` - Optional Discord webhook URL for backup success/failure notifications.
+
 - `BUN_VERSION` - Specify a custom Bun version to override the default version set in the Dockerfile.
 
 - `PG_VERSION` - Specify a custom PostgreSQL version to override the default version set in the Dockerfile.
