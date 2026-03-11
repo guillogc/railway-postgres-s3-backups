@@ -1,26 +1,29 @@
 {
-  "name": "railway-pg-s3-backup",
-  "version": "0.0.1",
-  "description": "A simple Bun app to backup PostgreSQL databases to an S3 bucket",
-  "main": "src/index.ts",
-  "type": "module",
-  "scripts": {
-    "start": "bun run src/index.ts",
-    "build": "bun build ./src/index.ts --outdir=./dist --target=node",
-    "typecheck": "bun run build"
-  },
-  "author": "Faraz Patankar",
-  "license": "MIT",
-  "devDependencies": {
-    "bun-types": "latest",
-    "@types/cron": "^2.0.1"
-  },
-  "dependencies": {
-    "@aws-sdk/client-s3": "^3.901.0",
-    "@aws-sdk/lib-storage": "^3.901.0",
-    "cron": "^3.1.6",
-    "envsafe": "^2.0.3",
-    "filesize": "^10.1.1"
-  },
-  "keywords": []
+    "name": "railway-pg-s3-backup",
+    "version": "0.0.1",
+    "description": "A simple Bun app to backup PostgreSQL databases to an S3 bucket",
+    "keywords": [],
+    "license": "MIT",
+    "author": "Faraz Patankar",
+    "type": "module",
+    "main": "src/index.ts",
+    "scripts": {
+        "start": "bun run src/index.ts",
+        "build": "bun build ./src/index.ts --outdir=./dist --target=node",
+        "typecheck": "bun run build",
+        "fmt": "oxfmt",
+        "fmt:check": "oxfmt --check"
+    },
+    "dependencies": {
+        "@aws-sdk/client-s3": "^3.901.0",
+        "@aws-sdk/lib-storage": "^3.901.0",
+        "cron": "^3.1.6",
+        "envsafe": "^2.0.3",
+        "filesize": "^10.1.1"
+    },
+    "devDependencies": {
+        "@types/cron": "^2.0.1",
+        "bun-types": "latest",
+        "oxfmt": "^0.37.0"
+    }
 }
