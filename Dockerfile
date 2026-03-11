@@ -4,7 +4,7 @@ FROM oven/bun:${BUN_VERSION}-alpine AS build
 
 WORKDIR /app
 
-COPY package.json bun.lockb tsconfig.json ./
+COPY package.json bun.lock tsconfig.json ./
 COPY src ./src
 
 RUN bun install --frozen-lockfile
@@ -15,7 +15,7 @@ WORKDIR /app
 
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./
-COPY --from=build /app/bun.lockb ./
+COPY --from=build /app/bun.lock ./
 COPY --from=build /app/src ./src
 COPY --from=build /app/tsconfig.json ./
 
