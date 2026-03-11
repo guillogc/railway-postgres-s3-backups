@@ -1,8 +1,15 @@
-# Postgres S3 backups
+# Postgres S3 Backups
 
-A simple Bun application to backup your PostgreSQL database to S3. Run on a schedule via your platform's cron or scheduler.
+A simple Bun application to backup your PostgreSQL database to S3. Runs a single backup on startup and exits—schedule it via your platform's cron or scheduler (e.g. Railway Cron).
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/I4zGrH)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/postgres-s3-backup?referralCode=5tCsuk&utm_medium=integration&utm_source=template&utm_campaign=generic)
+
+## Quick Start
+
+1. Click **Deploy on Railway** above
+2. Add a Postgres database and S3-compatible storage (e.g. AWS S3, Cloudflare R2, Backblaze B2)
+3. Configure the required environment variables
+4. Set up a cron job to run the service on your desired schedule
 
 ## Configuration
 
